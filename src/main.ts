@@ -12,8 +12,17 @@ if (!ctx) {
 }
 
 let y = 0;
+let secondsPassed;
+let oldTimestamp: number = 0;
+let fps;
+let velocity = 50;
+let acceleration = 50;
 
-function ballDrop() {
+function ballDrop(timestamp: number) {
+    secondsPassed = Math.min((timestamp - oldTimestamp) / 1000, 0.1);
+    oldTimestamp = timestamp;
+    fps = Math.round(1 / secondsPassed)
+
     if (!ctx || !canvas) {
         throw new Error("Canvas or Context doesn't exist");
     }
@@ -24,9 +33,10 @@ function ballDrop() {
     ctx.fill();
     ctx.lineWidth = 0;
     ctx.stroke();
-    y++;
+    y += (velocity * secondsPassed);
+    velocity += (acceleration * secondsPassed);
 
-    requestAnimationFrame(ballDrop);
+    window.requestAnimationFrame(ballDrop);
 }
 
-ballDrop();
+window.requestAnimationFrame(ballDrop);
