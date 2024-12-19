@@ -3,10 +3,15 @@ type Position = {
     y: number;
 }
 
+type Velocity = {
+    vx: number;
+    vy: number;
+}
+
 class Ball {
     private radius: number;
     private initialPosition: Position;
-    private initialVelocity: number;
+    private initialVelocity: Velocity;
     private ctx: CanvasRenderingContext2D;
     private canvas: HTMLCanvasElement;
 
@@ -16,7 +21,10 @@ class Ball {
             x: canvas.width / 2,
             y: canvas.height / 2
         };
-        this.initialVelocity = 5;
+        this.initialVelocity = {
+            vx: 3,
+            vy: 5,
+        };
         this.ctx = ctx;
         this.canvas = canvas;
     }
@@ -31,10 +39,18 @@ class Ball {
     }
 
     public updateBall() {
-        if (this.initialPosition.y > this.canvas.height + this.radius || this.initialPosition.y < 0 - this.radius) {
-            return
+        if (this.initialPosition.y > this.canvas.height + this.radius ||
+            this.initialPosition.y < 0 - this.radius) {
+            this.initialVelocity.vy *= -1;
         }
-        this.initialPosition.y -= this.initialVelocity;
+        if (this.initialPosition.x < 0 + this.radius ||
+            this.initialPosition.x > this.canvas.width - this.radius
+        ) {
+            this.initialVelocity.vx *= -1;
+        }
+
+        this.initialPosition.y += this.initialVelocity.vy;
+        this.initialPosition.x += this.initialVelocity.vx;
     }
 }
 
