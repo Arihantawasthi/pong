@@ -1,61 +1,34 @@
-class PongTable {
-    private canvas: HTMLCanvasElement
-    private ctx: CanvasRenderingContext2D
+import PongTable from "./pongTable";
+import Ball from "./ball";
 
-    constructor(canvasId: string) {
-        if (!canvasId.startsWith("#")) {
-            throw new Error("Canvas Id should start with '#'");
-        }
-        this.canvas = document.querySelector(`${canvasId}`) as HTMLCanvasElement;
-        if (!this.canvas) {
-            throw new Error(`Canvas with ${canvasId} ID not found`);
-        }
+class GameControl {
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D;
+    private ball: Ball;
+    private pongTable: PongTable;
 
-        this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
-        if (!this.ctx) {
-            throw new Error(`Context for canvas ${canvasId} not found`);
-        }
-
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+    constructor() {
+        this.pongTable = new PongTable("#game");
+        this.canvas = this.pongTable.canvas;
+        this.ctx = this.pongTable.ctx;
+        this.ball = new Ball(this.canvas, this.ctx);
     }
 
-    public drawField() {
-        this.ctx.fillStyle = "#bbb";
-        this.ctx.fillRect(0, (this.canvas.height / 2) - 4, this.canvas.width, 8);
-
-        this.ctx.beginPath();
-        this.ctx.arc((this.canvas.width / 2), (this.canvas.height / 2), 150, 0, 2 * Math.PI)
-        this.ctx.lineWidth = 8;
-        this.ctx.strokeStyle = "#bbb";
-        this.ctx.stroke();
-
-        this.ctx.beginPath();
-        this.ctx.moveTo((this.canvas.width / 2) - 300, this.canvas.height);
-        this.ctx.lineTo((this.canvas.width / 2) - 300, this.canvas.height - 150);
-        this.ctx.lineTo(((this.canvas.width / 2) - 300) + 600, this.canvas.height - 150);
-        this.ctx.lineTo(((this.canvas.width / 2) - 300) + 600, this.canvas.height);
-        this.ctx.stroke();
-
-        this.ctx.beginPath();
-        this.ctx.moveTo((this.canvas.width / 2) - 300, 0);
-        this.ctx.lineTo((this.canvas.width / 2) - 300, 150);
-        this.ctx.lineTo(((this.canvas.width / 2) - 300) + 600, 150);
-        this.ctx.lineTo(((this.canvas.width / 2) - 300) + 600, 0);
-        this.ctx.stroke();
-
-        this.drawBall();
+    public draw() {
+        this.pongTable.drawField();
+        this.ball.drawBall();
     }
 
-    public drawBall() {
-        this.ctx.beginPath();
-        this.ctx.arc((this.canvas.width / 2), this.canvas.height / 2, 12, 0, 2 * Math.PI);
-        this.ctx.fillStyle = "white";
-        this.ctx.fill();
-        this.ctx.lineWidth = 1;
-        this.ctx.stroke();
+    public update() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ball.updateBall();
+        this.draw();
+        requestAnimationFrame(this.update.bind(this));
     }
 }
 
-const pong = new PongTable("#game");
-pong.drawField();
+
+window.addEventListener("load", () => {
+    const gameControl = new GameControl();
+    gameControl.update();
+});
