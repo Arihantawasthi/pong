@@ -1,12 +1,4 @@
-type Position = {
-    x: number;
-    y: number;
-}
-
-type Velocity = {
-    vx: number;
-    vy: number;
-}
+import { Position, Velocity } from "./types";
 
 class Ball {
     private radius: number;
