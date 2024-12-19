@@ -20,10 +20,26 @@
                 width: 100%;
                 background-color: #111;
             }
+            .score-container {
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                z-index: 9;
+                transform: translateY(-50%);
+                font-size: 48px;
+                color: white;
+            }
+            .score-container p {
+                margin: 2rem 0rem;
+            }
         </style>
     </head>
     <body>
         <canvas id="game"></canvas>
+        <div class="score-container">
+            <p class="score" id="player-1-score">0</p>
+            <p class="score" id="player-2-score">1</p>
+        </div>
         <script type="module" src="/src/main.ts"></script>
     </body>
 </html>
