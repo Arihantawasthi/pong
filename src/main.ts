@@ -18,12 +18,12 @@ class GameControl {
             new Paddle(
                 this.ctx,
                 { x: this.canvas.width / 2, y: this.canvas.height - 20 },
-                { vx: 10, vy: 0 }
+                { vx: 0.10, vy: 0 }
             ),
             new Paddle(
                 this.ctx,
                 { x: this.canvas.width / 2, y: 20 },
-                { vx: 10, vy: 0 }
+                { vx: 0.10, vy: 0 }
             )
         ]
     }
@@ -39,6 +39,7 @@ class GameControl {
     public update() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ball.updateBall();
+        this.paddles[0].updatePaddle();
         this.draw();
         requestAnimationFrame(this.update.bind(this));
     }

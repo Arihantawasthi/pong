@@ -27,7 +27,14 @@ class Paddle {
     }
 
     public updatePaddle() {
-        this.initialPosition.x += this.initialVelocity.vx;
+        window.addEventListener("keydown", event => {
+            if(event.key == "ArrowRight" || event.code == "ArrowRight") {
+                this.initialPosition.x += this.initialVelocity.vx;
+            }
+            if(event.key == "ArrowLeft" || event.code == "ArrowLeft") {
+                this.initialPosition.x -= this.initialVelocity.vx;
+            }
+        })
     }
 }
 
