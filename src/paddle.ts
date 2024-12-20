@@ -26,15 +26,18 @@ class Paddle {
         this.ctx.fillRect(this.initialPosition.x, this.initialPosition.y, this.width, this.height);
     }
 
-    public updatePaddle() {
-        window.addEventListener("keydown", event => {
-            if(event.key == "ArrowRight" || event.code == "ArrowRight") {
-                this.initialPosition.x += this.initialVelocity.vx;
-            }
-            if(event.key == "ArrowLeft" || event.code == "ArrowLeft") {
-                this.initialPosition.x -= this.initialVelocity.vx;
-            }
-        })
+    public moveRight() {
+        if (this.initialPosition.x + this.width >= window.innerWidth) {
+            return
+        }
+        this.initialPosition.x += this.initialVelocity.vx;
+    }
+
+    public moveLeft() {
+        if (this.initialPosition.x <= 0) {
+            return
+        }
+        this.initialPosition.x -= this.initialVelocity.vx;
     }
 }
 
