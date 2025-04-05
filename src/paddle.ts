@@ -39,6 +39,18 @@ class Paddle {
         }
         this.initialPosition.x -= this.initialVelocity.vx;
     }
+
+    public getPaddlePosition() {
+        return { paddleX: this.initialPosition.x, paddleY: this.initialPosition.y };
+    }
+
+    public getPaddleWidth() {
+        return this.width;
+    }
+
+    public getPaddleHeight() {
+        return this.height;
+    }
 }
 
 export default Paddle;

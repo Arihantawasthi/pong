@@ -14,8 +14,8 @@ class Ball {
             y: canvas.height / 2
         };
         this.initialVelocity = {
-            vx: 3,
-            vy: 5,
+            vx: 0,
+            vy: 0,
         };
         this.ctx = ctx;
         this.canvas = canvas;
@@ -30,11 +30,12 @@ class Ball {
         this.ctx.stroke();
     }
 
+    public startMoving() {
+        this.initialVelocity.vx = 5;
+        this.initialVelocity.vy = 8;
+    }
+
     public updateBall() {
-        if (this.initialPosition.y > this.canvas.height + this.radius ||
-            this.initialPosition.y < 0 - this.radius) {
-            this.initialVelocity.vy *= -1;
-        }
         if (this.initialPosition.x < 0 + this.radius ||
             this.initialPosition.x > this.canvas.width - this.radius
         ) {
@@ -44,7 +45,34 @@ class Ball {
         this.initialPosition.y += this.initialVelocity.vy;
         this.initialPosition.x += this.initialVelocity.vx;
     }
-}
 
+    public getBallPosition() {
+        return { ballX: this.initialPosition.x, ballY: this.initialPosition.y };
+    }
+
+    public getBallVelocity() {
+        return { ballVX: this.initialVelocity.vx, ballVY: this.initialVelocity.vy };
+    }
+
+    public flipBallVelocity() {
+        this.initialVelocity.vy *= -1;
+    }
+
+    public getRadius() {
+        return this.radius;
+    }
+
+    public resetBall() {
+        this.initialPosition = {
+            x: this.canvas.width / 2,
+            y: this.canvas.height / 2
+        };
+        this.initialVelocity = {
+            vx: 3,
+            vy: 5
+        };
+
+    }
+}
 
 export default Ball;

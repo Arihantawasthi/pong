@@ -10,6 +10,7 @@ class GameControl {
     private paddle1: Paddle;
     private paddle2: Paddle;
     private keys: { [key: string]: boolean } = {};
+    private isGameRunning: boolean;
 
     constructor() {
         this.pongTable = new PongTable("#game");
@@ -17,12 +18,13 @@ class GameControl {
         this.ctx = this.pongTable.ctx;
         this.ball = new Ball(this.canvas, this.ctx);
         this.paddle1 = new Paddle(this.ctx, { x: this.canvas.width / 2, y: this.canvas.height - 20 }, { vx: 10, vy: 0 });
-        this.paddle2 = new Paddle(this.ctx, { x: this.canvas.width / 2, y: 20 }, { vx: 10, vy: 0 });
+        this.paddle2 = new Paddle(this.ctx, { x: this.canvas.width / 2, y: 10 }, { vx: 10, vy: 0 });
 
         window.addEventListener("keydown", this.handleKeyDown.bind(this));
         window.addEventListener("keyup", this.handleKeyUp.bind(this));
         this.keys = {};
-
+        this.isGameRunning = false;
+        this.startGameWithControl();
     }
 
     public draw() {
@@ -46,10 +48,57 @@ class GameControl {
         if (this.keys["a"]) this.paddle2.moveLeft();
     }
 
+    private startGameWithControl() {
+        let count = 3;
+        const countdownInterval = setInterval(() => {
+            count--;
+            let countElContainer = document.querySelector(".counter") as HTMLElement;
+            let countEl = document.querySelector(".counter-text") as HTMLElement;
+            if (count > 0) {
+                countEl.innerText = (count).toString();
+            } else if (count == 0) {
+                countEl.innerText = "GO!!";
+            } else {
+                clearInterval(countdownInterval);
+                countElContainer.style.display = "none";
+                this.isGameRunning = true;
+                this.ball.startMoving();
+            }
+        }, 1000);
+    }
+
     public update() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ball.updateBall();
+        if (!this.isGameRunning) {
+            this.draw();
+            requestAnimationFrame(this.update.bind(this));
+            return;
+        }
+
         this.updatePaddles();
+        this.ball.updateBall();
+        const { ballX, ballY } = this.ball.getBallPosition();
+
+        const { paddleX, paddleY } = this.paddle1.getPaddlePosition();
+        const paddle2X = this.paddle2.getPaddlePosition().paddleX;
+        const paddle2Y = this.paddle2.getPaddlePosition().paddleY;
+
+        if (paddleY - 10 < (ballY + this.ball.getRadius()) &&
+            ballX > paddleX && ballX < (paddleX + this.paddle1.getPaddleWidth())) {
+            this.ball.flipBallVelocity();
+        }
+        if ((paddle2Y + this.paddle2.getPaddleHeight() + 10) > (ballY - this.ball.getRadius()) &&
+            ballX > paddle2X && ballX < (paddle2X + this.paddle2.getPaddleWidth())) {
+            this.ball.flipBallVelocity();
+        }
+
+        if (ballY - this.ball.getRadius() <= 0) {
+            this.ball.resetBall();
+            this.startGameWithControl();
+        } else if (ballY + this.ball.getRadius() >= this.canvas.height) {
+            this.ball.resetBall();
+            this.startGameWithControl();
+        }
         this.draw();
         requestAnimationFrame(this.update.bind(this));
     }
