@@ -17,6 +17,8 @@ class GameControl {
     private player2ScoreEl: HTMLElement;
     private gameOver:  HTMLElement;
     private playBtn:  HTMLElement;
+    private leftBtn: HTMLElement;
+    private rightBtn: HTMLElement;
 
     constructor() {
         this.pongTable = new PongTable("#game");
@@ -44,6 +46,24 @@ class GameControl {
         this.playBtn.addEventListener("click", () => {
             this.startGameWithControl()
         })
+        this.leftBtn = document.querySelector(".control-left") as HTMLElement;
+        this.rightBtn = document.querySelector(".control-right") as HTMLElement;
+        this.leftBtn.addEventListener("touchstart", event => {
+            event.preventDefault();
+            this.keys["ArrowLeft"] = true;
+        });
+        this.rightBtn.addEventListener("touchstart", event => {
+            event.preventDefault();
+            this.keys["ArrowRight"] = true;
+        });
+        this.leftBtn.addEventListener("touchend", event => {
+            event.preventDefault();
+            this.keys["ArrowLeft"] = false;
+        });
+        this.rightBtn.addEventListener("touchend", event => {
+            event.preventDefault();
+            this.keys["ArrowRight"] = false;
+        });
     }
 
     public draw() {
@@ -131,10 +151,10 @@ class GameControl {
             this.score.player1 += 1;
             this.player1ScoreEl.innerHTML = this.score.player1.toString();
 
-            if (this.score.player1 == 2) {
+            if (this.score.player1 == 5) {
                 this.isGameRunning = false;
                 this.gameOver.style.display = "block";
-                this.gameOver.innerHTML = "Player 1 Won!";
+                this.gameOver.innerHTML = "You Won!";
                 this.playBtn.style.display = "block";
                 this.score.player1 = 0;
             }
@@ -143,11 +163,10 @@ class GameControl {
             this.score.player2 += 1;
             this.player2ScoreEl.innerHTML = this.score.player2.toString();
 
-            if (this.score.player2 == 2) {
-                console.log("HELLO");
+            if (this.score.player2 == 5) {
                 this.isGameRunning = false;
                 this.gameOver.style.display = "block";
-                this.gameOver.innerHTML = "Player 2 Won!";
+                this.gameOver.innerHTML = "You Lost!";
                 this.playBtn.style.display = "block";
                 this.score.player2 = 0;
             }

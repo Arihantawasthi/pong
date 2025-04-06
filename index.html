@@ -60,9 +60,44 @@
                 background: #111;
                 border: 1px solid #ddd;
                 padding: 1rem;
+                color: white;
                 width: 300px;
                 text-align: center;
                 cursor: pointer;
+            }
+
+            .controls {
+                width: 100%;
+                padding: 0px 1rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: absolute;
+                top: 80%;
+                z-index: 9;
+            }
+
+            .controls div {
+                width: 3rem;
+                height: 3rem;
+                background: #111;
+                border-radius: 100%;
+                border: 1px solid #fff;
+                padding: 0.2rem;
+                -webkit-user-select: none;
+                user-select: none;
+                -webkit-touch-callout: none;
+            }
+
+            .controls div img {
+                width: 100%;
+                height: 100%;
+                object-position: center;
+                object-fit: cover;
+            }
+
+            .control-right {
+                transform: rotateY(180deg);
             }
         </style>
     </head>
@@ -79,6 +114,14 @@
         </div>
         <div class="btn">
             Click to Play!
+        </div>
+        <div class="controls">
+            <div class="control-left">
+                <img src="arrow_back.png" />
+            </div>
+            <div class="control-right">
+                <img src="arrow_back.png" />
+            </div>
         </div>
         <script type="module" src="/src/main.ts"></script>
     </body>
