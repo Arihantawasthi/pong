@@ -55,6 +55,7 @@ class Ball {
     }
 
     public flipBallVelocity() {
+        this.initialVelocity.vy += 1;
         this.initialVelocity.vy *= -1;
     }
 
@@ -68,8 +69,8 @@ class Ball {
             y: this.canvas.height / 2
         };
         this.initialVelocity = {
-            vx: 3,
-            vy: 5
+            vx: 5,
+            vy: 8
         };
 
     }

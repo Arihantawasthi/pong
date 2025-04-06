@@ -63,8 +63,16 @@ class GameControl {
     private updatePaddles() {
         if (this.keys["ArrowRight"]) this.paddle1.moveRight();
         if (this.keys["ArrowLeft"]) this.paddle1.moveLeft();
-        if (this.keys["d"]) this.paddle2.moveRight();
-        if (this.keys["a"]) this.paddle2.moveLeft();
+
+        const { ballX } = this.ball.getBallPosition();
+        const { paddleX } = this.paddle2.getPaddlePosition();
+
+        if (ballX + 40 > paddleX + this.paddle2.getPaddleWidth()) {
+            this.paddle2.moveRight();
+        }
+        if (ballX + 40 < paddleX + this.paddle2.getPaddleWidth()) {
+            this.paddle2.moveLeft();
+        }
     }
 
     private startGameWithControl() {
