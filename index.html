@@ -7,6 +7,112 @@
         <link rel="stylesheet" href="/index.css" />
         <title>Pong</title>
 
+        <style>
+                * {
+                    padding: 0;
+                    margin: 0;
+                    box-sizing: border-box;
+                }
+
+                body {
+                    overflow: hidden;
+                }
+
+                #game {
+                    height: 100%;
+                    width: 100%;
+                    background-color: #111;
+                }
+
+                .score-container {
+                    position: absolute;
+                    top: 50%;
+                    right: 10px;
+                    z-index: 9;
+                    transform: translateY(-50%);
+                    font-size: 48px;
+                    color: white;
+                }
+
+                .score-container p {
+                    margin: 2rem 0rem;
+                }
+
+                .counter, .game-over {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    z-index: 9;
+                    transform: translate(-50%, -50%);
+                    font-size: 52px;
+                    color: white;
+                    background: #111;
+                    border: 1px solid #ddd;
+                    padding: 2rem 0;
+                    width: 300px;
+                    text-align: center;
+                }
+
+                .game-over {
+                    display: none;
+                }
+
+                .btn {
+                    position: absolute;
+                    top: 60%;
+                    left: 50%;
+                    z-index: 9;
+                    transform: translate(-50%);
+                    font-size: 36px;
+                    background: #111;
+                    border: 1px solid #ddd;
+                    padding: 1rem;
+                    color: white;
+                    width: 300px;
+                    text-align: center;
+                    cursor: pointer;
+                }
+
+                .controls {
+                    width: 100%;
+                    padding: 0px 1rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    position: absolute;
+                    top: 80%;
+                    z-index: 9;
+                }
+
+                .controls div {
+                    width: 3rem;
+                    height: 3rem;
+                    background: #111;
+                    border-radius: 100%;
+                    border: 1px solid #fff;
+                    padding: 0.2rem;
+                    -webkit-user-select: none;
+                    user-select: none;
+                    -webkit-touch-callout: none;
+                }
+
+                .controls div img {
+                    width: 100%;
+                    height: 100%;
+                    object-position: center;
+                    object-fit: cover;
+                }
+
+                .control-right {
+                    transform: rotateY(180deg);
+                }
+
+                @media (min-width: 768px) {
+                    .controls {
+                        display: none;
+                    }
+                }
+        </style>
     </head>
     <body>
         <canvas id="game"></canvas>
@@ -24,10 +130,10 @@
         </div>
         <div class="controls">
             <div class="control-left">
-                <img src="arrow_back.png" />
+                <img src="/arrow_back.png" />
             </div>
             <div class="control-right">
-                <img src="arrow_back.png" />
+                <img src="/arrow_back.png" />
             </div>
         </div>
         <script type="module" src="/src/main.ts"></script>
