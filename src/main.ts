@@ -1,6 +1,7 @@
 import PongTable from "./pongTable";
 import Ball from "./ball";
 import Paddle from "./paddle";
+import { Score } from "./types";
 
 class GameControl {
     private canvas: HTMLCanvasElement;
@@ -11,6 +12,11 @@ class GameControl {
     private paddle2: Paddle;
     private keys: { [key: string]: boolean } = {};
     private isGameRunning: boolean;
+    private score: Score;
+    private player1ScoreEl: HTMLElement;
+    private player2ScoreEl: HTMLElement;
+    private gameOver:  HTMLElement;
+    private playBtn:  HTMLElement;
 
     constructor() {
         this.pongTable = new PongTable("#game");
@@ -24,7 +30,20 @@ class GameControl {
         window.addEventListener("keyup", this.handleKeyUp.bind(this));
         this.keys = {};
         this.isGameRunning = false;
-        this.startGameWithControl();
+        this.score = {
+            player1: 0,
+            player2: 0,
+        }
+        this.player1ScoreEl = document.querySelector("#player-1-score") as HTMLElement;
+        this.player2ScoreEl = document.querySelector("#player-2-score") as HTMLElement;
+        this.gameOver = document.querySelector(".game-over") as HTMLElement;
+        this.playBtn = document.querySelector(".btn") as HTMLElement;
+        this.player1ScoreEl.innerHTML = this.score.player1.toString();
+        this.player2ScoreEl.innerHTML = this.score.player2.toString();
+        this.gameOver.innerHTML = "";
+        this.playBtn.addEventListener("click", () => {
+            this.startGameWithControl()
+        })
     }
 
     public draw() {
@@ -54,6 +73,12 @@ class GameControl {
             count--;
             let countElContainer = document.querySelector(".counter") as HTMLElement;
             let countEl = document.querySelector(".counter-text") as HTMLElement;
+            countElContainer.style.display = "block";
+            this.playBtn.style.display = "none";
+            this.gameOver.style.display = "none";
+            this.player1ScoreEl.innerHTML = this.score.player1.toString();
+            this.player2ScoreEl.innerHTML = this.score.player2.toString();
+
             if (count > 0) {
                 countEl.innerText = (count).toString();
             } else if (count == 0) {
@@ -61,6 +86,7 @@ class GameControl {
             } else {
                 clearInterval(countdownInterval);
                 countElContainer.style.display = "none";
+                this.gameOver.style.display = "none";
                 this.isGameRunning = true;
                 this.ball.startMoving();
             }
@@ -94,10 +120,29 @@ class GameControl {
 
         if (ballY - this.ball.getRadius() <= 0) {
             this.ball.resetBall();
-            this.startGameWithControl();
+            this.score.player1 += 1;
+            this.player1ScoreEl.innerHTML = this.score.player1.toString();
+
+            if (this.score.player1 == 2) {
+                this.isGameRunning = false;
+                this.gameOver.style.display = "block";
+                this.gameOver.innerHTML = "Player 1 Won!";
+                this.playBtn.style.display = "block";
+                this.score.player1 = 0;
+            }
         } else if (ballY + this.ball.getRadius() >= this.canvas.height) {
             this.ball.resetBall();
-            this.startGameWithControl();
+            this.score.player2 += 1;
+            this.player2ScoreEl.innerHTML = this.score.player2.toString();
+
+            if (this.score.player2 == 2) {
+                console.log("HELLO");
+                this.isGameRunning = false;
+                this.gameOver.style.display = "block";
+                this.gameOver.innerHTML = "Player 2 Won!";
+                this.playBtn.style.display = "block";
+                this.score.player2 = 0;
+            }
         }
         this.draw();
         requestAnimationFrame(this.update.bind(this));

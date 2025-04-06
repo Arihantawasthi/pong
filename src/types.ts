@@ -7,3 +7,8 @@ export type Velocity = {
     vx: number;
     vy: number;
 }
+
+export type Score = {
+    player1: number;
+    player2: number;
+}

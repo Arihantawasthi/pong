@@ -32,7 +32,7 @@
             .score-container p {
                 margin: 2rem 0rem;
             }
-            .counter {
+            .counter, .game-over {
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -46,6 +46,24 @@
                 width: 300px;
                 text-align: center;
             }
+            .game-over {
+                display: none;
+            }
+
+            .btn {
+                position: absolute;
+                top: 60%;
+                left: 50%;
+                z-index: 9;
+                transform: translate(-50%);
+                font-size: 36px;
+                background: #111;
+                border: 1px solid #ddd;
+                padding: 1rem;
+                width: 300px;
+                text-align: center;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
@@ -55,7 +73,12 @@
             <p class="score" id="player-2-score">1</p>
         </div>
         <div class="counter">
-            <div class="counter-text">3</div>
+            <div class="counter-text">Pong!</div>
+        </div>
+        <div class="game-over">
+        </div>
+        <div class="btn">
+            Click to Play!
         </div>
         <script type="module" src="/src/main.ts"></script>
     </body>
